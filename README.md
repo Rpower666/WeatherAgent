@@ -1,6 +1,6 @@
 # Weather Agent
 
-`ExampleAgent` 提供了一个和风天气查询示例，支持让 Agent 理解天气数据获取流程、查询天气、把 JSON 可视化为 Markdown，并返回天气详情 URL 和出行建议。
+`WeatherAgent` 提供了一个和风天气查询示例，支持让 Agent 理解天气数据获取流程、查询天气、把 JSON 可视化为 Markdown，并返回天气详情 URL 和出行建议。
 
 ## 功能
 
@@ -33,7 +33,7 @@ WeatherApiPath.py    # 和风天气接口路径字典
 .gitignore           # 忽略 .env 和缓存文件
 ```
 
-不要上传真实 `.env` 文件。`ExampleAgent/.gitignore` 已忽略 `.env`。
+不要上传真实 `.env` 文件。`WeatherAgent/.gitignore` 已忽略 `.env`。
 
 ## 环境变量
 
@@ -74,7 +74,7 @@ print(payload["message"])
 如果从项目根目录按包导入：
 
 ```python
-from ExampleAgent.WeatherGet import weather
+from WeatherAgent.WeatherGet import weather
 ```
 
 ## Agent 可读取的结果
@@ -127,7 +127,7 @@ data["location"][0]["id"]
 
 ## 直接运行
 
-在 `ExampleAgent` 目录中运行：
+在 `WeatherAgent` 目录中运行：
 
 ```powershell
 python WeatherGet.py
@@ -136,7 +136,7 @@ python WeatherGet.py
 或在项目根目录运行：
 
 ```powershell
-python ExampleAgent\WeatherGet.py
+python WeatherAgent\WeatherGet.py
 ```
 
 示例输出：
@@ -158,7 +158,7 @@ python ExampleAgent\WeatherGet.py
 
 ## 上传到 GitHub
 
-只上传 `ExampleAgent` 目录下的文件：
+只上传 `WeatherAgent` 目录下的文件：
 
 ```powershell
 git add README.md .gitignore .env.example WeatherGet.py WeatherGetEncode.py WeatherApiPath.py
