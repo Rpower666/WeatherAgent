@@ -90,9 +90,16 @@ class weather:
 
     def get_weather_payload(self) -> dict:
         location_info = self.locationGet()
-        data = self._request(self.api_name, location_info["id"])
+        location_id = location_info["id"]
+        data = self._request(self.api_name, location_id)
+        weather_now = None
+        if "daily" in data:
+            try:
+                weather_now = self._request("weather_now", location_id)
+            except (KeyError, requests.RequestException) as e:
+                print(e)
         source_url = data.get("fxLink")
-        visualization = self.to_markdown_table(data)
+        visualization = self.to_markdown_table(data, weather_now=weather_now)
         advice = self.build_advice(data)
         message = self.build_user_message(
             location_name=location_info.get("name", self.location_str),
@@ -104,6 +111,7 @@ class weather:
         return {
             "location_info": location_info,
             "weather_data": data,
+            "weather_now": weather_now,
             "source_url": source_url,
             "visualization": visualization,
             "advice": advice,
@@ -114,7 +122,7 @@ class weather:
     def to_json_text(self, data: dict) -> str:
         return json.dumps(data, ensure_ascii=False, indent=2)
 
-    def to_markdown_table(self, data: dict) -> str:
+    def to_markdown_table(self, data: dict, weather_now: dict | None = None) -> str:
         if not data:
             return "没有可展示的天气数据。"
 
@@ -138,18 +146,24 @@ class weather:
             return "\n".join(rows)
 
         if "daily" in data:
+            feels_like = ""
+            if weather_now and "now" in weather_now:
+                feels_like_value = weather_now["now"].get("feelsLike", "")
+                if feels_like_value not in (None, ""):
+                    feels_like = f"{feels_like_value}℃"
             rows = [
-                "| 日期 | 白天 | 夜间 | 最高温 | 最低温 | 风向 | 风力 | 紫外线 | 湿度 |",
-                "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+                "| 日期 | 白天 | 夜间 | 最高温 | 最低温 | 体感温度 | 风向 | 风力 | 紫外线 | 湿度 |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             ]
-            for item in data["daily"]:
+            for index, item in enumerate(data["daily"]):
                 rows.append(
-                    "| {date} | {day} | {night} | {max_temp}℃ | {min_temp}℃ | {wind_dir} | {wind_scale}级 | {uv} | {humidity}% |".format(
+                    "| {date} | {day} | {night} | {max_temp}℃ | {min_temp}℃ | {feels_like} | {wind_dir} | {wind_scale}级 | {uv} | {humidity}% |".format(
                         date=item.get("fxDate", ""),
                         day=item.get("textDay", ""),
                         night=item.get("textNight", ""),
                         max_temp=item.get("tempMax", ""),
                         min_temp=item.get("tempMin", ""),
+                        feels_like=feels_like if index == 0 else "",
                         wind_dir=item.get("windDirDay", ""),
                         wind_scale=item.get("windScaleDay", ""),
                         uv=item.get("uvIndex", ""),
