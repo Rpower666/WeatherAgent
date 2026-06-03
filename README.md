@@ -57,7 +57,7 @@ HOST_API="YOUR_QWEATHER_API_HOST"
 ## 安装依赖
 
 ```powershell
-pip install requests python-dotenv PyJWT cryptography
+pip install requirements.txt
 ```
 
 ## 基础调用
@@ -144,9 +144,11 @@ python WeatherAgent\WeatherGet.py
 ```markdown
 ## 彭州天气
 
-| 日期 | 白天 | 夜间 | 最高温 | 最低温 | 风向 | 风力 | 紫外线 | 湿度 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-02 | 多云 | 阵雨 | 30℃ | 21℃ | 北风 | 1-3级 | 12 | 67% |
+| 日期 | 白天 | 夜间 | 最高温 | 最低温 | 体感温度 | 风向 | 风力 | 紫外线 | 湿度 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-06-03 | 多云 | 多云 | 32℃ | 22℃ | 31℃ | 北风 | 1-3级 | 12 | 46% |
+| 2026-06-04 | 多云 | 阴 | 34℃ | 21℃ |  | 北风 | 1-3级 | 12 | 58% |
+| 2026-06-05 | 多云 | 多云 | 33℃ | 22℃ |  | 北风 | 1-3级 | 12 | 59% |
 
 ### 建议
 - 可能有降水，建议带伞，出行注意路面湿滑。
@@ -161,7 +163,7 @@ python WeatherAgent\WeatherGet.py
 只上传 `WeatherAgent` 目录下的文件：
 
 ```powershell
-git add README.md .gitignore .env.example WeatherGet.py WeatherGetEncode.py WeatherApiPath.py
+git add README.md .gitignore .env.example WeatherGet.py WeatherGetEncode.py WeatherApiPath.py requirements.txt
 git commit -m "Add weather agent example"
 git push
 ```
